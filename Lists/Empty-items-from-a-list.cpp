@@ -14,6 +14,8 @@ void menu();
 void insertarlista(Nodo *&, int);
 void mostrarlista(Nodo *);
 void buscarlista(Nodo *, int);
+void eliminarNodo(Nodo *&, int);
+void eliminarlista(Nodo *&, int &);
 
 int main()
 {
@@ -34,7 +36,10 @@ void menu()
         cout << "\t..MENU..\t" << endl;
         cout << "\t..1. Insertar elementos a la lista: " << endl;
         cout << "\t..2. Mostrar los elementos de la lista: " << endl;
-        cout << "\t..3. Salir: " << endl;
+        cout << "\t..3. Buscar un numero en la lista: " << endl;
+        cout << "\t..4. Eleminar un nodo en la lista: " << endl;
+        cout << "\t..5. Eliminar toda la lista: " << endl;
+        cout << "\t..6. Salir: " << endl;
         cout << "Opcion: ";
         cin >> opcion;
         switch (opcion)
@@ -53,6 +58,28 @@ void menu()
             system("pause");
             break;
         case 3:
+            cout << "Dijite el numero a buscar: ";
+            cin >> dato;
+            cout << endl;
+            buscarlista(lista, dato);
+            system("pause");
+            break;
+        case 4:
+            cout << "Dijite el numero a eliminar: ";
+            cin >> dato;
+            cout << endl;
+            eliminarNodo(lista, dato);
+            system("pause");
+            break;
+        case 5:
+            while (lista != NULL)
+            {
+                eliminarlista(lista, dato);
+                cout << dato << " -> ";
+            }
+            system("pause");
+            break;
+        case 6:
             cout << "Adios";
             break;
         default:
@@ -60,7 +87,7 @@ void menu()
             break;
         }
         system("cls");
-    } while (opcion != 3);
+    } while (opcion != 6);
 }
 
 void insertarlista(Nodo *&lista, int n)
@@ -125,4 +152,43 @@ void buscarlista(Nodo *lista, int n)
     {
         cout << "Elemento " << n << " No a sido encontrado en lsita" << endl;
     }
+}
+
+void eliminarNodo(Nodo *&lista, int n)
+{
+    if (lista != NULL)
+    {
+        Nodo *aux_borrar;
+        Nodo *anterior = NULL;
+        aux_borrar = lista;
+
+        while ((aux_borrar != NULL) && (aux_borrar->dato != n))
+        {
+            anterior = aux_borrar;
+            aux_borrar = aux_borrar->siguiente;
+        }
+
+        if (aux_borrar == NULL)
+        {
+            cout << "El elemneto no existe";
+        }
+        else if (anterior == NULL)
+        {
+            lista = lista->siguiente;
+            delete aux_borrar;
+        }
+        else
+        {
+            anterior->siguiente = aux_borrar->siguiente;
+            delete aux_borrar;
+        }
+    }
+}
+
+void eliminarlista(Nodo *&lista, int &n)
+{
+    Nodo *aux = lista;
+    n = aux->dato;
+    lista = aux->siguiente;
+    delete aux;
 }
